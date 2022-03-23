@@ -32,9 +32,9 @@ namespace CalculatorTests
         [Fact]
         public void ShouldMultiplyNumbers()
         {
-            double actual = _calculator.Multiply(2, 2);
+            double actual = _calculator.Multiply(2, 3);
 
-            Assert.Equal(4, actual);
+            Assert.Equal(6, actual);
         }
 
         [Fact]
