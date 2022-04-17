@@ -348,3 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+/BallsCollisions/Presentation/View/.editorconfig
+/BallsCollisions/Presentation/ViewModel/Properties/launchSettings.json

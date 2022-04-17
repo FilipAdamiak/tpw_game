@@ -5,15 +5,18 @@ VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{EB3E13F2-AE40-4C89-B80C-BB7ADDA9CD3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "Presentation\ViewModel\ViewModel.csproj", "{D65A1BBD-FB17-4FFF-A157-6A826660251E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "Presentation\ViewModel\ViewModel.csproj", "{D65A1BBD-FB17-4FFF-A157-6A826660251E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Presentation\Model\Model.csproj", "{8EEFDBE3-97C2-4017-8831-12CDFF6B88B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Presentation\Model\Model.csproj", "{8EEFDBE3-97C2-4017-8831-12CDFF6B88B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View", "Presentation\View\View.csproj", "{63E1535D-069C-44A4-A3F7-D9A95DED45D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "View", "Presentation\View\View.csproj", "{63E1535D-069C-44A4-A3F7-D9A95DED45D0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D65A1BBD-FB17-4FFF-A157-6A826660251E} = {D65A1BBD-FB17-4FFF-A157-6A826660251E}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{54C372C9-848A-4644-9F76-1888C1CE8CB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{54C372C9-848A-4644-9F76-1888C1CE8CB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{2B30C35B-ADDA-4F0D-91F0-8FCF83E04F71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{2B30C35B-ADDA-4F0D-91F0-8FCF83E04F71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
