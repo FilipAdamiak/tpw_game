@@ -1,5 +1,6 @@
 ﻿using System;
 using Model;
+using System.Windows.Input;
 
 namespace ViewModel
 {
@@ -9,41 +10,43 @@ namespace ViewModel
         public MyViewModel() : this(ModelAbstractApi.Create())
         { }
 
+        public ICommand ButtonClicked { get; set; }
+
         public MyViewModel(ModelAbstractApi modelAbstractApi)
         {
-            _ballsAmount = modelAbstractApi.BallsAmount;
+            ButtonClicked = new RelayCommand(() => ClickHandle());
+            BallsAmount = "0";
         }
 
-        private int _ballsAmount;
-        public int BallsAmount 
+        public void ClickHandle() { }
+
+        private string _ballsAmount;
+        public string BallsAmount 
         { 
             get { return _ballsAmount; } 
             set { _ballsAmount = value; OnPropertyChanged(); } 
         }
         
-        private bool startSimulation;
+        private bool _startSimulation;
         public bool StartSimulation 
         {   
-            get { return startSimulation; }
-            set { startSimulation = value; OnPropertyChanged(); }
+            get { return _startSimulation; }
+            set { _startSimulation = value; OnPropertyChanged(); }
         }
         
-        private double rectWidth;
-        public double RectWidth
+        private int _rectWidth;
+        public int RectWidth
         {
-            get { return rectWidth; }
-            set { rectWidth = value; }
+            get { return _rectWidth; }
+            set { _rectWidth = value; }
         }
 
-        private double rectHeight;
-        public double RectHeight
+        private int _rectHeight;
+        public int RectHeight
         { 
-            get { return rectHeight; } 
-            set { rectHeight = value; } 
+            get { return _rectHeight; } 
+            set { _rectHeight = value; } 
         }
-
-
-
 
     }
 }
