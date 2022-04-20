@@ -7,12 +7,12 @@ namespace ViewModel
     public class MyViewModel : ViewModelBase    
     {
 
-        public MyViewModel() : this(ModelAbstractApi.Create())
+        public MyViewModel() : this(ModelAbstractAPI.CreateModelAPI())
         { }
 
         public ICommand ButtonClicked { get; set; }
 
-        public MyViewModel(ModelAbstractApi modelAbstractApi)
+        public MyViewModel(ModelAbstractAPI modelAbstractApi)
         {
             ButtonClicked = new RelayCommand(() => ClickHandle());
             BallsAmount = "0";
