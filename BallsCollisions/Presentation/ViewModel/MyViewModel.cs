@@ -1,7 +1,8 @@
 ﻿using System;
-using Model;
-using System.Windows.Input;
 using System.Collections;
+using System.Diagnostics;
+using System.Windows.Input;
+using Model;
 
 namespace ViewModel
 {
@@ -22,6 +23,7 @@ namespace ViewModel
             _height = modelLayer.Height;
             _width = modelLayer.Width;
             ClickButton = new RelayCommand(() => ClickHandler());
+            ExitClick = new RelayCommand(() => ExitClickHandler());
             BallsGroup = modelLayer.Balls(_amountOfBalls);
         }
         
@@ -36,11 +38,17 @@ namespace ViewModel
         }
 
         public ICommand ClickButton { get; set; }
+        public ICommand ExitClick { get; set; }
+
         private void ClickHandler()
         {
             modelLayer.Balls(_amountOfBalls);
-            //Begin simulation
-            
+            modelLayer.CallSimulation();
+        }
+
+        private void ExitClickHandler()
+        {
+            modelLayer.StopSimulation();
         }
 
         public int BallsAmount
@@ -49,15 +57,20 @@ namespace ViewModel
             set
             {
                 _amountOfBalls = value;
-                
+                RaisePropertyChanged("Ball Amount");
             }
         }
-        public IList BallsGroup { get => _balls; set
+        public IList BallsGroup
+        {
+            get => _balls;
+            set
             {
                 _balls = value;
+                RaisePropertyChanged("BallsGroup");
+            }
+        }
 
-            } }
-
+       
     }
 }
 

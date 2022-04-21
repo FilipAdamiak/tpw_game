@@ -1,33 +1,41 @@
 ﻿using System;
+using System.Numerics;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Logic
 {
-    public class Ball 
+    public class Ball : INotifyPropertyChanged
     {
-        private int _x;
-        private int _y;
+        private Vector2 _position;
         private double _radius;
-       
+        private Vector2 _velocity;
+        private int _speed = 1500;
+
 
         public Ball() { }
 
-        public Ball(int x, int y, double radius)
+        public Ball(Vector2 ballPosition, double radius)
         {
-            _x = x; 
-            _y = y;
+            _position = ballPosition;
             _radius = radius;
         }
-
-        public int X
-        { 
-            get { return _x; } 
-            set { _x = value; } 
+        public Vector2 Position
+        {
+            get => _position;
+            set => _position = value;
         }
 
-        public int Y
+        public Vector2 Velocity { get; set; }
+        
+        
+        public float X
         {
-            get { return _y; }
-            set { _y = value; }
+            get => _position.X;
+        }
+        public float Y
+        {
+            get => _position.Y;
         }
 
         public double Radius
@@ -35,6 +43,29 @@ namespace Logic
             get { return _radius; } 
             set { _radius = value; } 
         }
-   
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void ChangePosition()
+        {
+            Position += new Vector2(Velocity.X * _speed, Velocity.Y * _speed);
+            if (Position.X < _radius || Position.X > Board._boardWidth - 25)
+            {
+                Velocity *= -Vector2.UnitX;
+            }
+
+            if (Position.Y < _radius || Position.Y > Board._boardHeight - 25)
+            {
+                Velocity *= -Vector2.UnitY;
+            }
+
+            RaisePropertyChanged(nameof(X));
+            RaisePropertyChanged(nameof(Y));
+        }
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

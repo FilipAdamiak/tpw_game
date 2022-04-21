@@ -1,40 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Logic
 {   
     public class Board
     {
-        public static int _boardWidth;
-        public static int _boardHeight;
-        public List<Ball> _balls;
-        public List<Task> _tasks = new List<Task>();
+        public static int _boardWidth = 750;
+        public static int _boardHeight = 400;
+        public ObservableCollection<Ball> _balls = new ObservableCollection<Ball>();
 
-
-        public Board(int width, int height, int balls_number)
+        public Board()
         {
-            _boardWidth = width;
-            _boardHeight = height;
-            _balls = new List<Ball>();
+
+        }
+
+        public Board(int balls_number)
+        {
             CreateBalls(balls_number);
         }
 
         public void CreateBalls(int count)
         {
+            if(count < 0)
+            {
+                count = Math.Abs(count);
+            }
             Random random = new Random();
-            int ball_radius = 5;
             for (int i = 0; i < count; i++)
             {
-                
-                int _randX = random.Next(1, _boardWidth - 25);
-                int _randY = random.Next(1, _boardHeight - 25);
+                Ball ball = new Ball();
+                ball.Velocity = new Vector2((float)0.0034, (float)0.0034);
+                ball.Position = new Vector2(random.Next(1, _boardWidth - 25), random.Next(1, _boardHeight - 25));
 
-                _balls.Add(new Ball(_randX, _randY, ball_radius));
+                _balls.Add(ball);
             }
         }
+        public ObservableCollection<Ball> Balls
+        {
+            get => _balls;
+        }
        
+        public int BoardWidth
+        {
+            get => _boardWidth;
+        }
+        public int BallsHeight
+        {
+            get => _boardHeight;
+        }
+
     }
     
 }

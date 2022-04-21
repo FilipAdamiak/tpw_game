@@ -2,6 +2,7 @@
 using System;
 using Logic;
 using System.Collections.Generic;
+using Data;
 
 namespace Model
 {
@@ -14,40 +15,36 @@ namespace Model
 
         public abstract int Width { get; }
         public abstract int Height { get; }
-        public abstract List<Ball> Balls(int balls);
-        public abstract void RunBalls();
+        public abstract ObservableCollection<Ball> Balls(int balls);
+        public abstract void CallSimulation();
+        public abstract void StopSimulation();
 
     }
     public class ModelAPILayer : ModelAbstractAPI
     {
-        private Board board = new Board(750, 400 ,10);
+        private Board board = new Board();
+        private LogicAbstractAPI logicLayer = LogicAbstractAPI.CreateLogicAPI(DataAbstractAPI.CreateDataAPI());
+
         public override int Width => Board._boardWidth;
         public override int Height => Board._boardHeight;
 
-        public override void RunBalls()
+        public override void CallSimulation()
         {
-            
+            logicLayer.RunSimulation(board);
         }
 
-        public override List<Ball> Balls(int amount)
+        public override void StopSimulation()
+        {
+            logicLayer.StopSimulation(board);
+        }
+
+        public override ObservableCollection<Ball> Balls(int amount)
         {
             board.CreateBalls(amount);
             return board._balls;
         }
 
-        public static void Main()
-        {
-            Logic.LogicAbstractAPI logicAbstractAPI = Logic.LogicAbstractAPI.CreateLogicAPI(Data.DataAbstractAPI.CreateDataAPI());
-            Logic.Board board = logicAbstractAPI.CreateBoard(532, 400, 10);
-
-            for (int i = 0; i < board._balls.Count; i++)
-            {
-                System.Console.WriteLine("Ball " + i.ToString());
-                System.Console.WriteLine(board._balls[i].X);
-                System.Console.WriteLine(board._balls[i].Y);
-                System.Console.WriteLine(board._balls[i].Radius);
-            }
-        } 
+       
     }
 
 }
