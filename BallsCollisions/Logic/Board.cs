@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic
 {   
     public class Board
     {
-        private int _boardWidth { get; }
-        private int _boardHeight { get; }
+        public static int _boardWidth;
+        public static int _boardHeight;
         public List<Ball> _balls;
+        public List<Task> _tasks = new List<Task>();
 
 
         public Board(int width, int height, int balls_number)
@@ -26,13 +28,12 @@ namespace Logic
             for (int i = 0; i < count; i++)
             {
                 
-                int _randX = random.Next(1, _boardWidth);
-                int _randY = random.Next(1, _boardHeight);
+                int _randX = random.Next(1, _boardWidth - 25);
+                int _randY = random.Next(1, _boardHeight - 25);
 
                 _balls.Add(new Ball(_randX, _randY, ball_radius));
             }
         }
-
        
     }
     

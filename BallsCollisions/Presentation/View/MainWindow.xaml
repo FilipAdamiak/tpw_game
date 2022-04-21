@@ -19,7 +19,29 @@
         Stroke="Black" 
         StrokeThickness="4"
         Canvas.Left="10"
-        Canvas.Top="25" Margin="29,81,23,10" />
+        Canvas.Top="25" Margin="29,81,23,10"
+        Height="{Binding ViewHeight}"
+        Width="{Binding ViewWidth}"/>
+        <ItemsControl ItemsSource="{Binding BallsGroup,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="29,81,23,10">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+
+
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Width="25" Height="25" Fill="Blue"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 
 </Window>

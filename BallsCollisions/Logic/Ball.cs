@@ -7,6 +7,7 @@ namespace Logic
         private int _x;
         private int _y;
         private double _radius;
+       
 
         public Ball() { }
 
@@ -34,6 +35,6 @@ namespace Logic
             get { return _radius; } 
             set { _radius = value; } 
         }
-
+   
     }
 }

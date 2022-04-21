@@ -1,52 +1,62 @@
 ﻿using System;
 using Model;
 using System.Windows.Input;
+using System.Collections;
 
 namespace ViewModel
 {
     public class MyViewModel : ViewModelBase    
     {
 
-        public MyViewModel() : this(ModelAbstractAPI.CreateModelAPI())
-        { }
+        private readonly ModelAbstractAPI modelLayer = ModelAbstractAPI.CreateModelAPI();
+        private readonly int _width;
+        private readonly int _height;
+        private int _amountOfBalls;
+        private IList _balls;
 
-        public ICommand ButtonClicked { get; set; }
+        public MyViewModel() : this(ModelAbstractAPI.CreateModelAPI()) { }
 
-        public MyViewModel(ModelAbstractAPI modelAbstractApi)
+        public MyViewModel(ModelAbstractAPI modelAbstractAPI)
         {
-            ButtonClicked = new RelayCommand(() => ClickHandle());
-            BallsAmount = "0";
-        }
-
-        public void ClickHandle() { }
-
-        private string _ballsAmount;
-        public string BallsAmount 
-        { 
-            get { return _ballsAmount; } 
-            set { _ballsAmount = value; OnPropertyChanged(); } 
+            modelLayer = modelAbstractAPI;
+            _height = modelLayer.Height;
+            _width = modelLayer.Width;
+            ClickButton = new RelayCommand(() => ClickHandler());
+            BallsGroup = modelLayer.Balls(_amountOfBalls);
         }
         
-        private bool _startSimulation;
-        public bool StartSimulation 
-        {   
-            get { return _startSimulation; }
-            set { _startSimulation = value; OnPropertyChanged(); }
-        }
-        
-        private int _rectWidth;
-        public int RectWidth
+
+        public int ViewHeight
         {
-            get { return _rectWidth; }
-            set { _rectWidth = value; }
+            get { return _height; }
+        }
+        public int ViewWidth
+        {
+            get { return _width; }
         }
 
-        private int _rectHeight;
-        public int RectHeight
-        { 
-            get { return _rectHeight; } 
-            set { _rectHeight = value; } 
+        public ICommand ClickButton { get; set; }
+        private void ClickHandler()
+        {
+            modelLayer.Balls(_amountOfBalls);
+            //Begin simulation
+            
         }
+
+        public int BallsAmount
+        {
+            get { return _amountOfBalls; }
+            set
+            {
+                _amountOfBalls = value;
+                
+            }
+        }
+        public IList BallsGroup { get => _balls; set
+            {
+                _balls = value;
+
+            } }
 
     }
 }
