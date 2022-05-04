@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System;
 using Logic;
-using System.Collections.Generic;
-using Data;
+
 
 namespace Model
 {
@@ -13,35 +11,36 @@ namespace Model
             return new ModelAPILayer();
         }
 
-        public abstract int Width { get; }
-        public abstract int Height { get; }
-        public abstract ObservableCollection<Ball> Balls(int balls);
+        public abstract ObservableCollection<Ball> CreateBalls(int ballsNumber, int radius);
         public abstract void CallSimulation();
         public abstract void StopSimulation();
 
     }
     public class ModelAPILayer : ModelAbstractAPI
     {
-        private Board board = new Board();
-        private LogicAbstractAPI logicLayer = LogicAbstractAPI.CreateLogicAPI(DataAbstractAPI.CreateDataAPI());
+        private readonly LogicApi logicLayer;
 
-        public override int Width => Board._boardWidth;
-        public override int Height => Board._boardHeight;
+        public ModelAPILayer() : this(LogicApi.CreateApi()) { }
+        
+        public ModelAPILayer(LogicApi logicApi)
+        {
+            logicLayer = logicApi ?? LogicApi.CreateApi();
+        }
 
         public override void CallSimulation()
         {
-            logicLayer.RunSimulation(board);
+            logicLayer.RunSimulation();
         }
 
         public override void StopSimulation()
         {
-            logicLayer.StopSimulation(board);
+            logicLayer.StopSimulation();
         }
 
-        public override ObservableCollection<Ball> Balls(int amount)
+        public override ObservableCollection<Ball> CreateBalls(int ballsNumber, int radius)
         {
-            board.CreateBalls(amount);
-            return board._balls;
+            logicLayer.CreateBalls(ballsNumber, radius);
+            return logicLayer.Balls;
         }
 
        

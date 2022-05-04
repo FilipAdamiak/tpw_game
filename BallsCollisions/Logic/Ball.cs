@@ -8,14 +8,14 @@ namespace Logic
     public class Ball : INotifyPropertyChanged
     {
         private Vector2 _position;
-        private double _radius;
+        private int _radius;
         private Vector2 _velocity;
-        private int _speed = 1500;
+        private const int _speed = 1500;
 
 
         public Ball() { }
 
-        public Ball(Vector2 ballPosition, double radius)
+        public Ball(Vector2 ballPosition, int radius)
         {
             _position = ballPosition;
             _radius = radius;
@@ -38,7 +38,7 @@ namespace Logic
             get => _position.Y;
         }
 
-        public double Radius
+        public int Radius
         { 
             get { return _radius; } 
             set { _radius = value; } 
@@ -49,12 +49,12 @@ namespace Logic
         public void ChangePosition()
         {
             Position += new Vector2(Velocity.X * _speed, Velocity.Y * _speed);
-            if (Position.X < _radius || Position.X > Board._boardWidth - 25)
+            if (Position.X < _radius || Position.X > Board._boardWidth - _radius)
             {
                 Velocity *= -Vector2.UnitX;
             }
 
-            if (Position.Y < _radius || Position.Y > Board._boardHeight - 25)
+            if (Position.Y < _radius || Position.Y > Board._boardHeight - _radius)
             {
                 Velocity *= -Vector2.UnitY;
             }

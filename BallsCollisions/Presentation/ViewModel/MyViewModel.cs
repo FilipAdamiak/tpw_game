@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
+﻿using System.Collections;
 using System.Windows.Input;
 using Model;
 
@@ -9,9 +7,7 @@ namespace ViewModel
     public class MyViewModel : ViewModelBase    
     {
 
-        private readonly ModelAbstractAPI modelLayer = ModelAbstractAPI.CreateModelAPI();
-        private readonly int _width;
-        private readonly int _height;
+        private readonly ModelAbstractAPI modelLayer;
         private int _amountOfBalls;
         private IList _balls;
 
@@ -19,30 +15,17 @@ namespace ViewModel
 
         public MyViewModel(ModelAbstractAPI modelAbstractAPI)
         {
-            modelLayer = modelAbstractAPI;
-            _height = modelLayer.Height;
-            _width = modelLayer.Width;
+            modelLayer = modelAbstractAPI ?? ModelAbstractAPI.CreateModelAPI();
             ClickButton = new RelayCommand(() => ClickHandler());
             ExitClick = new RelayCommand(() => ExitClickHandler());
-            BallsGroup = modelLayer.Balls(_amountOfBalls);
         }
         
-
-        public int ViewHeight
-        {
-            get { return _height; }
-        }
-        public int ViewWidth
-        {
-            get { return _width; }
-        }
-
         public ICommand ClickButton { get; set; }
         public ICommand ExitClick { get; set; }
 
         private void ClickHandler()
         {
-            modelLayer.Balls(_amountOfBalls);
+            BallsGroup = modelLayer.CreateBalls(_amountOfBalls, 25);
             modelLayer.CallSimulation();
         }
 

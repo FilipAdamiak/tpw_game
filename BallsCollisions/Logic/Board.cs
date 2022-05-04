@@ -1,32 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Logic
 {   
-    public class Board
+    public class Board : LogicApi
     {
-        public static int _boardWidth = 750;
-        public static int _boardHeight = 400;
+        public const int _boardWidth = 750;
+        public const int _boardHeight = 400;
+        private CancellationToken _cancelToken;
+        private List<Task> _tasks = new List<Task>();
         public ObservableCollection<Ball> _balls = new ObservableCollection<Ball>();
-
+       
         public Board()
         {
 
         }
 
-        public Board(int balls_number)
+        public CancellationToken CancellationToken => _cancelToken;
+
+        public override void RunSimulation()
         {
-            CreateBalls(balls_number);
+            foreach (Ball ball in _balls)
+            {
+                Task task = Task.Run(() =>
+                {
+                    Thread.Sleep(1);
+                    while (true)
+                    {
+                        Thread.Sleep(10);
+                        try
+                        {
+                            _cancelToken.ThrowIfCancellationRequested();
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            break;
+                        }
+
+                        ball.ChangePosition();
+                    }
+                }
+                );
+                _tasks.Add(task);
+            }
         }
 
-        public void CreateBalls(int count)
+        public override void StopSimulation()
         {
-            if(count < 0)
+            _tasks.Clear();
+            _balls.Clear();
+        }
+
+        public override Ball CreateBall(Vector2 pos, int radius)
+        {
+            return new Ball(pos, radius);
+        }
+
+        public override void CreateBalls(int count, int radius)
+        {
+            if (count < 0)
             {
                 count = Math.Abs(count);
             }
@@ -35,16 +71,18 @@ namespace Logic
             {
                 Ball ball = new Ball();
                 ball.Velocity = new Vector2((float)0.0034, (float)0.0034);
-                ball.Position = new Vector2(random.Next(1, _boardWidth - 25), random.Next(1, _boardHeight - 25));
-
+                ball.Radius = radius;
+                ball.Position = new Vector2(random.Next(1, _boardWidth - ball.Radius), random.Next(1, _boardHeight - ball.Radius));
+               
                 _balls.Add(ball);
             }
         }
-        public ObservableCollection<Ball> Balls
+
+        public override void DeleteBalls()
         {
-            get => _balls;
+            _balls.Clear();
         }
-       
+
         public int BoardWidth
         {
             get => _boardWidth;
@@ -54,6 +92,11 @@ namespace Logic
             get => _boardHeight;
         }
 
+        public override int Width => _boardWidth;
+
+        public override int Height => _boardHeight;
+
+        public override ObservableCollection<Ball> Balls => _balls;
     }
     
 }
