@@ -49,12 +49,12 @@ namespace Logic
         public void ChangePosition()
         {
             Position += new Vector2(Velocity.X * _speed, Velocity.Y * _speed);
-            if (Position.X < _radius || Position.X > Board._boardWidth - _radius)
+            if (Position.X < 0 || Position.X > Board._boardWidth - 25 )
             {
                 Velocity *= -Vector2.UnitX;
             }
 
-            if (Position.Y < _radius || Position.Y > Board._boardHeight - _radius)
+            if (Position.Y < 0 || Position.Y > Board._boardHeight - 25)
             {
                 Velocity *= -Vector2.UnitY;
             }

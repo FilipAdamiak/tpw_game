@@ -12,7 +12,7 @@ namespace Data
         }
         
     }
-    public class DataLayer : DataAbstractAPI
+    internal class DataLayer : DataAbstractAPI
     {
         public DataLayer() { }
     }

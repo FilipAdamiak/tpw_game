@@ -1,13 +1,14 @@
 ﻿using System.Numerics;
 using System.Collections.ObjectModel;
+using Data;
 
 namespace Logic
 {
-    public abstract class LogicApi
+    public abstract class LogicAbstractAPI
     {
-        public static LogicApi CreateApi()
+        public static LogicAbstractAPI CreateApi(DataAbstractAPI dataAbstractAPI = default(DataAbstractAPI))
         {
-            return new Board();
+            return new Board(dataAbstractAPI);
         }
 
         public abstract int Width { get; }

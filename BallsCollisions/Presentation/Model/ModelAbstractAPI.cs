@@ -6,25 +6,29 @@ namespace Model
 {
     public abstract class ModelAbstractAPI
     {
-        public static ModelAbstractAPI CreateModelAPI()
+        public static ModelAbstractAPI CreateModelAPI(LogicAbstractAPI logicApi = default(LogicAbstractAPI))
         {
-            return new ModelAPILayer();
+            return new ModelAPILayer(logicApi);
         }
+
+        public abstract int Width { get; }
+        public abstract int Height { get; }
 
         public abstract ObservableCollection<Ball> CreateBalls(int ballsNumber, int radius);
         public abstract void CallSimulation();
         public abstract void StopSimulation();
-
     }
-    public class ModelAPILayer : ModelAbstractAPI
+    internal class ModelAPILayer : ModelAbstractAPI
     {
-        private readonly LogicApi logicLayer;
+        private readonly LogicAbstractAPI logicLayer;
+        public override int Width => logicLayer.Width;
+        public override int Height => logicLayer.Height;
 
-        public ModelAPILayer() : this(LogicApi.CreateApi()) { }
+        public ModelAPILayer() : this(LogicAbstractAPI.CreateApi()) { }
         
-        public ModelAPILayer(LogicApi logicApi)
+        public ModelAPILayer(LogicAbstractAPI logicApi)
         {
-            logicLayer = logicApi ?? LogicApi.CreateApi();
+            logicLayer = logicApi ?? LogicAbstractAPI.CreateApi() ;
         }
 
         public override void CallSimulation()
@@ -42,6 +46,8 @@ namespace Model
             logicLayer.CreateBalls(ballsNumber, radius);
             return logicLayer.Balls;
         }
+    
+  
 
        
     }

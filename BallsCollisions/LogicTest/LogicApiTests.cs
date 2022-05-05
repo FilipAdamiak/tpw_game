@@ -6,6 +6,13 @@ namespace LogicTest
 {
     public class BallTests
     {
+        private LogicAbstractAPI _logicApi;
+        [SetUp]
+        public void SetUp()
+        {
+            _logicApi = LogicAbstractAPI.CreateApi(new DataSimulation());
+        }
+
         [Test]
         public void BallContructorTest()
         {
@@ -23,10 +30,10 @@ namespace LogicTest
         {
             Ball ball = new Ball();
             ball.Velocity = new Vector2(1, 2);
-            ball.Position = new Vector2(Board._boardWidth, Board._boardHeight);
+            ball.Position = new Vector2(_logicApi.Width, _logicApi.Height);
             ball.ChangePosition();
-            Assert.AreNotEqual(Board._boardWidth, ball.Velocity.X);
-            Assert.AreNotEqual(Board._boardHeight, ball.Velocity.Y);
+            Assert.AreNotEqual(_logicApi.Width, ball.Velocity.X);
+            Assert.AreNotEqual(_logicApi.Height, ball.Velocity.Y);
         }
 
         [Test]
@@ -37,37 +44,33 @@ namespace LogicTest
             Assert.AreEqual(1, ball.Velocity.X);
             Assert.AreEqual(2, ball.Velocity.Y);
         }
-    }
-
-    public class LogicApiTests
-    {
-        readonly LogicApi logicApi = LogicApi.CreateApi();
-        static int _width = 750;
-        static int _height = 400;
-
+    
+       
         [Test]
         public void LogicApiConstructorTest()
         {
-            Assert.AreEqual(_width, logicApi.Width);
-            Assert.AreEqual(_height, logicApi.Height);
-            Assert.AreEqual(logicApi.Balls.Count, 0);
+            int _width = 750;
+            int _height = 400;
+            Assert.AreEqual(_width, _logicApi.Width);
+            Assert.AreEqual(_height, _logicApi.Height);
+            Assert.AreEqual(_logicApi.Balls.Count, 0);
         }
 
         [Test]
         public void CreateBallsTest()
         {
             int _amount = 5;
-            int _radius = 10;
-            logicApi.CreateBalls(_amount, _radius);
+            int _radius = 25;
+            _logicApi.CreateBalls(_amount, _radius);
 
-            Assert.AreEqual(_amount, logicApi.Balls.Count);
+            Assert.AreEqual(_amount, _logicApi.Balls.Count);
 
-            foreach (Ball ball in logicApi.Balls)
+            foreach (Ball ball in _logicApi.Balls)
             {
-                Assert.IsTrue(ball.Position.X - _radius >= 0);
-                Assert.IsTrue(ball.Position.X + _radius <= _width);
-                Assert.IsTrue(ball.Position.Y - _radius >= 0);
-                Assert.IsTrue(ball.Position.Y + _radius <= _height);
+                Assert.IsTrue(ball.Position.X >= 1);
+                Assert.IsTrue(ball.Position.X  <= _logicApi.Width - _radius);
+                Assert.IsTrue(ball.Position.Y  >= 1);
+                Assert.IsTrue(ball.Position.Y  <= _logicApi.Height -  _radius);
             }
 
         }
@@ -75,8 +78,8 @@ namespace LogicTest
         [Test]
         public void DeleteBallsTest()
         {
-            logicApi.DeleteBalls();
-            Assert.AreEqual(0, logicApi.Balls.Count);
+            _logicApi.DeleteBalls();
+            Assert.AreEqual(0, _logicApi.Balls.Count);
         }
 
     }

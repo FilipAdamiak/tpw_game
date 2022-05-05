@@ -4,20 +4,22 @@ using System.Collections.ObjectModel;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
+using Data;
 
 namespace Logic
 {   
-    public class Board : LogicApi
+    internal class Board : LogicAbstractAPI
     {
-        public const int _boardWidth = 750;
-        public const int _boardHeight = 400;
+        public static int _boardWidth = 750;
+        public static int _boardHeight = 400;
         private CancellationToken _cancelToken;
         private List<Task> _tasks = new List<Task>();
         public ObservableCollection<Ball> _balls = new ObservableCollection<Ball>();
-       
-        public Board()
-        {
+        private readonly DataAbstractAPI dataAbstract;
 
+        public Board(DataAbstractAPI dataAbstractAPI)
+        {
+            this.dataAbstract = dataAbstractAPI;
         }
 
         public CancellationToken CancellationToken => _cancelToken;
@@ -71,8 +73,7 @@ namespace Logic
             {
                 Ball ball = new Ball();
                 ball.Velocity = new Vector2((float)0.0034, (float)0.0034);
-                ball.Radius = radius;
-                ball.Position = new Vector2(random.Next(1, _boardWidth - ball.Radius), random.Next(1, _boardHeight - ball.Radius));
+                ball.Position = new Vector2(random.Next(1, _boardWidth - 25), random.Next(1, _boardHeight - 25));
                
                 _balls.Add(ball);
             }
