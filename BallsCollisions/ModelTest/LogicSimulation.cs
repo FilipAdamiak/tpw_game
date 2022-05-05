@@ -1,5 +1,4 @@
 using Logic;
-using System;
 using System.Collections.ObjectModel;
 using System.Numerics;
 
@@ -7,17 +6,19 @@ namespace ModelTest
 {
     public class LogicSimulation : LogicAbstractAPI
     {
+        private readonly ObservableCollection<Ball> balls;
+
+        public LogicSimulation()
+        {
+            this.balls = new ObservableCollection<Ball>();
+        }
 
         public override int Width => 750;
 
         public override int Height => 400;
 
-        public override ObservableCollection<Ball> Balls => new ObservableCollection<Ball>();
-
-        public ObservableCollection<Ball> BallsCollection
-        {
-            get => Balls;
-            set => BallsCollection = value;
+        public override ObservableCollection<Ball> Balls {
+            get { return balls; }
         }
 
         public override Ball CreateBall(Vector2 pos, int radius)

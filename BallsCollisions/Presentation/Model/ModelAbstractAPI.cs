@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Logic;
 
-
 namespace Model
 {
     public abstract class ModelAbstractAPI
@@ -17,6 +16,7 @@ namespace Model
         public abstract ObservableCollection<Ball> CreateBalls(int ballsNumber, int radius);
         public abstract void CallSimulation();
         public abstract void StopSimulation();
+        public abstract int GetBallAmount();
     }
     internal class ModelAPILayer : ModelAbstractAPI
     {
@@ -46,9 +46,12 @@ namespace Model
             logicLayer.CreateBalls(ballsNumber, radius);
             return logicLayer.Balls;
         }
-    
-  
 
+        public override int GetBallAmount()
+        {
+            return logicLayer.Balls.Count;
+        }
+    
        
     }
 

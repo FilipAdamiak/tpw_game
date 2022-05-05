@@ -12,11 +12,12 @@ namespace ModelTest
             model = ModelAbstractAPI.CreateModelAPI(new LogicSimulation());
         }
         [Test]
-        public void StopSimulationTest()
+        public void CreateAndStopSimulationTest()
         {
-            model.CallSimulation();
+            model.CreateBalls(10, 10);
+            Assert.AreEqual(10, model.GetBallAmount());
             model.StopSimulation();
-            Assert.AreEqual(0, model.CreateBalls(10, 10).Count);
+            Assert.AreEqual(0, model.GetBallAmount());
         }
         [Test]
         public void CheckBoardSize()

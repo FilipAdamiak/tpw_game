@@ -17,7 +17,7 @@ namespace ViewModel
 
         public MyViewModel(ModelAbstractAPI modelAbstractAPI)
         {
-            modelLayer = modelAbstractAPI ?? ModelAbstractAPI.CreateModelAPI();
+            modelLayer = modelAbstractAPI;
             _height = modelLayer.Height;
             _width = modelLayer.Width;
             ClickButton = new RelayCommand(() => ClickHandler());
