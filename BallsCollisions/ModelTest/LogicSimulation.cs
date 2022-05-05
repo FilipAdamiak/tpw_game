@@ -8,12 +8,6 @@ namespace ModelTest
     public class LogicSimulation : LogicAbstractAPI
     {
 
-
-        public LogicSimulation()
-        {
-            CreateApi();
-        }
-
         public override int Width => 750;
 
         public override int Height => 400;
