@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using static Data.BallEntity;
 
 namespace Data
 {
@@ -13,29 +14,29 @@ namespace Data
     {
         public static int BoardWidth { get; set; }
         public static int BoardHeight { get; set; }
-        private ObservableCollection<Ball> _balls;
+        private ObservableCollection<BallEntity> _balls;
        
         public Board()
         {
-            _balls = new ObservableCollection<Ball>();
+            _balls = new ObservableCollection<BallEntity>();
             BoardWidth = 750;
             BoardHeight = 400;
         }
 
-        public ObservableCollection<Ball> Balls
+        public ObservableCollection<BallEntity> Balls
         {
             get { return _balls; }
         }
    
-        public override ObservableCollection<Ball> GetAllBalls()
+        public override ObservableCollection<BallEntity> GetAllBalls()
         {
             return _balls;
         }
 
-        public override Ball GetBallById(int id)
+        public override BallEntity GetBallById(int id)
         {
-            Ball result = null;
-            foreach(Ball ball in _balls)
+            BallEntity result = null;
+            foreach(BallEntity ball in _balls)
             {
                 if(ball.Id == id)
                 {
@@ -45,11 +46,11 @@ namespace Data
             return result;
         }
 
-        public override void AddBall(Ball ball)
+        public override void AddBall(BallEntity ball)
         {
             _balls.Add(ball);   
         }
-        public override void RemoveBall(Ball ball)
+        public override void RemoveBall(BallEntity ball)
         {
             _balls.Remove(ball);
         }
@@ -62,7 +63,7 @@ namespace Data
                 count = Math.Abs(count);
             }
             Random random = new Random();
-            int radius = Ball.Radius;
+            int radius = 25;
             for (int i = 0; i < count; i++)
             { 
                 Vector2 vel = new Vector2((float)0.0034, (float)0.0034);

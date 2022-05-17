@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics;
+using Data;
 
 namespace Logic
 {
     internal class BallsService
     {
-
-        public void BounceFromWall(Data.Ball ball, int boardWidth, int boardHeight)
+        private int radius = 25;
+        public void BounceFromWall(BallEntity ball, int boardWidth, int boardHeight)
         {
-            int radius = Data.Ball.Radius;
             if (ball.Position.X < 10 || ball.Position.X > boardWidth - radius)
             {
                 ball.Velocity *= -Vector2.UnitX;
@@ -21,11 +21,10 @@ namespace Logic
             }
         }
 
-        public void BounceFromBall(List<Data.Ball> balls, int i)
+        public void BounceFromBall(List<BallEntity> balls, int i)
         {
-            Data.Ball ball = balls[i];
-            int radius = Data.Ball.Radius;
-            foreach(Data.Ball ball2 in balls)
+            BallEntity ball = balls[i];
+            foreach(BallEntity ball2 in balls)
             {
                 if (ball == ball2) continue;
                 
@@ -49,21 +48,20 @@ namespace Logic
             }
         }
 
-        public float Distance(Data.Ball ball_1, Data.Ball ball_2)
+        public float Distance(BallEntity ball_1, BallEntity ball_2)
         {
             return Vector2.Distance(ball_1.Position, ball_2.Position);
         }
 
-        public bool CheckCollision(Data.Ball ball_1, Data.Ball ball_2)
+        public bool CheckCollision(BallEntity ball_1, BallEntity ball_2)
         {
-            int radius = Data.Ball.Radius;
             if (ball_1 == null || ball_2 == null)
                 return false;
 
             return Distance(ball_1, ball_2) <= (2*radius);
         }
 
-        public void BounceBack(Data.Ball ball_1, Data.Ball ball_2)
+        public void BounceBack(BallEntity ball_1, BallEntity ball_2)
         {
             while(CheckCollision(ball_1, ball_2))
             {
