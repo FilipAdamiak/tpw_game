@@ -6,7 +6,7 @@ namespace ViewModel
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        private ModelAbstractAPI _api;
+        private ModelAPILayer _api;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void RaisePropertyChanged([CallerMemberName]string propertyName = null)

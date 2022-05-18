@@ -4,45 +4,45 @@ using System.Windows.Input;
 
 namespace ViewModel
 {
-    public class RelayCommand : ICommand
+    public interface ISimplyCommand : ICommand
     {
+        bool IsEnabled { get; set; }
+    }
 
-        private readonly Action m_Execute;
-        private readonly Func<bool> m_CanExecute;
+    public class RelayCommand : ISimplyCommand
+    {
+        private readonly Action handler;
+        private bool isEnabled;
 
-        public RelayCommand(Action execute) : this(execute, null) { }
-
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public RelayCommand(Action handler)
         {
-            this.m_Execute = execute ?? throw new ArgumentNullException(nameof(execute));
-            this.m_CanExecute = canExecute;
+            this.handler = handler;
+            IsEnabled = true;
         }
 
+        public bool IsEnabled
+        {
+            get { return isEnabled; }
+            set
+            {
+                if (value != isEnabled)
+                {
+                    isEnabled = value;
+                    CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                }
+            }
+        }
 
         public bool CanExecute(object parameter)
         {
-            if (this.m_CanExecute == null)
-                return true;
-            if (parameter == null)
-                return this.m_CanExecute();
-            return this.m_CanExecute();
+            return isEnabled;
         }
 
-        
-        public virtual void Execute(object parameter)
-        {
-            this.m_Execute();
-        }
-
-       
         public event EventHandler CanExecuteChanged;
 
-     
-        internal void RaiseCanExecuteChanged()
+        public void Execute(object parameter)
         {
-            this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+            handler();
         }
-
-       
     }
 }

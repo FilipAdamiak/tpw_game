@@ -2,25 +2,40 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using static Data.BallEntity;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System;
 
 namespace Data
 {
     public abstract class DataAbstractAPI
     {
-        public abstract void AddBall(BallEntity ball);
-        public abstract void RemoveBall(BallEntity ball);
-        public abstract BallEntity GetBallById(int id);
-        public abstract ObservableCollection<BallEntity> GetAllBalls();
-        public abstract void CreateBalls(int count);
+        protected DataAbstractAPI()
+        {
+            CancelSimulationSource = new CancellationTokenSource();
+        }
+
         public static DataAbstractAPI CreateDataAPI()
         {
             return new Board();
         }
-        public static BallEntity CreateBall(int id, Vector2 position, Vector2 velocity)
+
+        public abstract void AddBalls(int amount);
+        public abstract void RunSimulation();
+        public abstract void StopSimulation();
+        public CancellationTokenSource CancelSimulationSource { get; }
+        public event EventHandler<BoardEventArgs> BallPositionChange;
+        
+        protected void OnPositionChange(BoardEventArgs args)
         {
-            return new Ball(id, position, velocity);
+            BallPositionChange?.Invoke(this, args);
         }
+
+        public static int _boardWidth { get; } = 750;
+        public static int _boardHeight { get; } = 400;
+
     }
 
-   
+
 }

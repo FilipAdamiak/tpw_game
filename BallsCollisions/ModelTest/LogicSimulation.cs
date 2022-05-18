@@ -6,55 +6,29 @@ namespace ModelTest
 {
     public class LogicSimulation : LogicAbstractAPI
     {
-        private readonly ObservableCollection<Ball> balls;
-
-        public LogicSimulation()
+        public override void AddBalls(int amount)
         {
-            this.balls = new ObservableCollection<Ball>();
+            throw new System.NotImplementedException();
         }
 
-        public override int Width => 750;
-
-        public override int Height => 400;
-
-        public override ObservableCollection<Ball> Balls {
-            get { return balls; }
+        public override int GetBoardHeight()
+        {
+            throw new System.NotImplementedException();
         }
 
-        public override Ball CreateBall(Vector2 pos, int radius)
+        public override int GetBoardWidth()
         {
-            return new Ball(pos, radius);
-        }
-
-        public override void CreateBalls(int count, int radius)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                Balls.Add(new Ball(new Vector2(0,0), 25));
-            }
-        }
-
-        public override void DeleteBalls()
-        {
-            Balls.Clear();
+            throw new System.NotImplementedException();
         }
 
         public override void RunSimulation()
         {
-            for(int i = 0; i < Balls.Count; i++)
-            {
-                Balls[i].ChangePosition();
-            }
+            throw new System.NotImplementedException();
         }
 
         public override void StopSimulation()
         {
-            DeleteBalls();
+            throw new System.NotImplementedException();
         }
-        public int GetBallsAmount()
-        {
-            return Balls.Count;
-        }
-
     }
 }

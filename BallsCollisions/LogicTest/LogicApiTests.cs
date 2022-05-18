@@ -7,7 +7,7 @@ namespace LogicTest
     public class BallTests
     {
         private LogicAbstractAPI _logicApi;
-        [SetUp]
+        /*[SetUp]
         public void SetUp()
         {
             _logicApi = LogicAbstractAPI.CreateApi(new DataSimulation());
@@ -80,7 +80,7 @@ namespace LogicTest
         {
             _logicApi.DeleteBalls();
             Assert.AreEqual(0, _logicApi.Balls.Count);
-        }
+        }*/
 
     }
 }

@@ -5,7 +5,7 @@ namespace ModelTest
 {
     public class ModelTest
     {
-        private ModelAbstractAPI model;
+        /*private ModelAbstractAPI model;
         [SetUp]
         public void SetUp()
         {
@@ -24,7 +24,7 @@ namespace ModelTest
         {
             Assert.AreEqual(400, model.Height);
             Assert.AreEqual(750, model.Width);
-        }
+        }*/
 
     }
 }

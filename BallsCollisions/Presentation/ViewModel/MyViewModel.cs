@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Model;
 
@@ -7,64 +10,96 @@ namespace ViewModel
     public class MyViewModel : ViewModelBase    
     {
 
-        private readonly ModelAbstractAPI modelLayer;
-        private readonly int _width;
-        private readonly int _height;
-        private int _amountOfBalls;
-        private IList _balls;
+        private ModelAPILayer modelLayer;
+        private int _ballsAmount;
 
-        public MyViewModel() : this(ModelAbstractAPI.CreateModelAPI()) { }
-
-        public MyViewModel(ModelAbstractAPI modelAbstractAPI)
+        public AsyncObservableCollection<VisualBall> Ellipses { get; set; }
+        public MyViewModel()
         {
-            modelLayer = modelAbstractAPI;
-            _height = modelLayer.Height;
-            _width = modelLayer.Width;
+            Ellipses = new AsyncObservableCollection<VisualBall>();
+            modelLayer = new ModelAPILayer();
+            BallsAmount = 5;
             ClickButton = new RelayCommand(() => ClickHandler());
             ExitClick = new RelayCommand(() => ExitClickHandler());
         }
         
-        public ICommand ClickButton { get; set; }
-        public ICommand ExitClick { get; set; }
+        public ISimplyCommand ClickButton { get; set; }
+        public ISimplyCommand ExitClick { get; set; }
         public int ViewHeight
         {
-            get { return _height; }
+            get { return modelLayer.GetHeight(); }
         }
         public int ViewWidth
         {
-            get { return _width; }
+            get { return modelLayer.GetWidth(); }
         }
         private void ClickHandler()
         {
-            BallsGroup = modelLayer.CreateBalls(_amountOfBalls, 25);
+            modelLayer.SetBallAmount(_ballsAmount);
+
+            for (var i = 0; i < BallsAmount; i++)
+            {
+                Ellipses.Add(new VisualBall());
+            }
+
+            modelLayer.BallPositionChange += (sender, args) =>
+            {
+                if (Ellipses.Count <= 0) return;
+
+                for (var i = 0; i < _ballsAmount; i++)
+                { 
+                    Ellipses[args.Ball.ID].Position = args.Ball.Position;
+                    //Ellipses[args.Ball.ID].Radius = args.Ball.Radius;
+                }
+            };
+          
             modelLayer.CallSimulation();
+            ToggleSimulationButtons();
         }
 
         private void ExitClickHandler()
         {
             modelLayer.StopSimulation();
+            Ellipses.Clear();
+            modelLayer.SetBallAmount(BallsAmount);
+            ToggleSimulationButtons();
+
         }
 
         public int BallsAmount
         {
-            get { return _amountOfBalls; }
+            get { return _ballsAmount; }
             set
             {
-                _amountOfBalls = value;
-                RaisePropertyChanged("Ball Amount");
+                _ballsAmount = value;
+                OnPropertyChanged();
             }
         }
-        public IList BallsGroup
-        {
-            get => _balls;
+        public AsyncObservableCollection<VisualBall> BallsGroup
+        {   
+            get => Ellipses;
             set
             {
-                _balls = value;
+                Ellipses = value;
                 RaisePropertyChanged("BallsGroup");
             }
         }
+        private void ToggleSimulationButtons()
+        {
+            ClickButton.IsEnabled = !ClickButton.IsEnabled;
+            ExitClick.IsEnabled = !ExitClick.IsEnabled;
+            if (!ClickButton.IsEnabled && !ExitClick.IsEnabled)
+                ExitClick.IsEnabled = !ExitClick.IsEnabled;
+      
 
-       
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string caller = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
+        }
+
     }
 }
 

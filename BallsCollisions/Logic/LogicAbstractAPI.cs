@@ -1,23 +1,32 @@
 ﻿using System.Numerics;
 using System.Collections.ObjectModel;
 using Data;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System;
 
 namespace Logic
 {
     public abstract class LogicAbstractAPI
     {
-        public static LogicAbstractAPI CreateApi(DataAbstractAPI dataAbstractAPI = default(DataAbstractAPI))
+        public static LogicAbstractAPI CreateApi( DataAbstractAPI dataAbstractAPI = default(DataAbstractAPI))
         {
-            return new Board(dataAbstractAPI);
+            dataAbstractAPI = DataAbstractAPI.CreateDataAPI();
+            return new LogicAPI(dataAbstractAPI);
         }
-
-        public abstract int Width { get; }
-        public abstract int Height { get; }
-        public abstract ObservableCollection<Ball> Balls { get; }
         public abstract void RunSimulation();
         public abstract void StopSimulation();
-        public abstract Ball CreateBall(Vector2 pos, int radius);
-        public abstract void CreateBalls(int count, int radius);
-        public abstract void DeleteBalls();
+        public abstract void AddBalls(int amount);
+
+        //public abstract void DeleteBalls();
+        public event EventHandler<LogicEventArgs> ChangedPosition;
+        protected void OnPositionChange(LogicEventArgs args)
+        {
+            ChangedPosition?.Invoke(this, args);
+        }
+        public abstract int GetBoardWidth();
+        public abstract int GetBoardHeight();
+       
+
     }
 }
