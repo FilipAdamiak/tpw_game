@@ -18,9 +18,8 @@ namespace Data
         }
 
         public List<BallEntity> _balls { get; }
-
-
-    
+        private const int Radius = 25;
+       
         public List<BallEntity> Balls
         {
             get { return _balls; }
@@ -31,10 +30,7 @@ namespace Data
             Random random = new Random();
             for (int i = 0; i < amount; i++)
             {
-                //BallEntity ballEntity = new Ball(i, new Vector2(random.Next(1, _boardWidth - 25), random.Next(1, _boardHeight - 25)),
-                //    new Vector2((float)0.0034, (float)0.0034), this);
-             
-                Vector2 position = GetRandomPointInsideBoard(25);
+                Vector2 position = GeneratePointInsideBoard(25);
                 Vector2 velocity = GetRandomVelocity();
                 BallEntity ball = new Ball(_balls.Count, position, velocity, this);
                 _balls.Add(ball);
@@ -61,7 +57,7 @@ namespace Data
         {
             CancelSimulationSource.Cancel();
         }
-        private Vector2 GetRandomPointInsideBoard(int ballRadius)
+        private Vector2 GeneratePointInsideBoard(int ballRadius)
         {
             var rng = new Random();
             var isPositionCorrect = false;
@@ -70,11 +66,10 @@ namespace Data
             var i = 0;
             while (!isPositionCorrect)
             {
-                //Vector2 position = new Vector2(25, 25);
-                x = rng.Next(25, _boardWidth - 25);
-                y = rng.Next(25, _boardHeight - 25);
+                x = rng.Next(Radius, _boardWidth - Radius);
+                y = rng.Next(Radius, _boardHeight - Radius);
 
-                isPositionCorrect = this.CheckIsSpaceFree(new Vector2(x,y), 25);
+                isPositionCorrect = CheckIsSpaceFree(new Vector2(x,y), Radius);
 
                 i++;
             }
@@ -86,7 +81,7 @@ namespace Data
         {
             foreach (var ball in _balls)
             {
-                if (this.IfCirclesCollide(ball.Position, ball.Radius, position, ballRadius))
+                if (IfCirclesCollide(ball.Position, ball.Radius, position, ballRadius))
                 {
                     return false;
                 }
@@ -106,7 +101,7 @@ namespace Data
         {
             var rng = new Random();
             var x = rng.Next(-200, 200);
-            var y = rng.Next(-50, 50);
+            var y = rng.Next(-200, 200);
             if (Math.Abs(x) < 50)
             {
                 x = 50;

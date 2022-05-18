@@ -42,7 +42,7 @@ namespace Data
                 if (nextPosition.Y < 0)
                     nextPosition.Y = -1;
                 if (Radius + nextPosition.Y > DataAbstractAPI._boardHeight)
-                    nextPosition.Y = DataAbstractAPI._boardHeight - Radius + 1;
+                    nextPosition.Y = Board._boardHeight - Radius + 1;
                 return nextPosition;
             }
 

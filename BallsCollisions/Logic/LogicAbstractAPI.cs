@@ -18,7 +18,6 @@ namespace Logic
         public abstract void StopSimulation();
         public abstract void AddBalls(int amount);
 
-        //public abstract void DeleteBalls();
         public event EventHandler<LogicEventArgs> ChangedPosition;
         protected void OnPositionChange(LogicEventArgs args)
         {

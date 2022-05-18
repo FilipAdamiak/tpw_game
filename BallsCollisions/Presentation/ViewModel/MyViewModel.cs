@@ -1,9 +1,4 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using Model;
+﻿using Model;
 
 namespace ViewModel
 {
@@ -18,7 +13,7 @@ namespace ViewModel
         {
             Ellipses = new AsyncObservableCollection<VisualBall>();
             modelLayer = new ModelAPILayer();
-            BallsAmount = 5;
+            BallsAmount = 0;
             ClickButton = new RelayCommand(() => ClickHandler());
             ExitClick = new RelayCommand(() => ExitClickHandler());
         }
@@ -49,12 +44,11 @@ namespace ViewModel
                 for (var i = 0; i < _ballsAmount; i++)
                 { 
                     Ellipses[args.Ball.ID].Position = args.Ball.Position;
-                    //Ellipses[args.Ball.ID].Radius = args.Ball.Radius;
                 }
             };
           
             modelLayer.CallSimulation();
-            ToggleSimulationButtons();
+            SwitchOnOffButtons();
         }
 
         private void ExitClickHandler()
@@ -62,8 +56,7 @@ namespace ViewModel
             modelLayer.StopSimulation();
             Ellipses.Clear();
             modelLayer.SetBallAmount(BallsAmount);
-            ToggleSimulationButtons();
-
+            SwitchOnOffButtons();
         }
 
         public int BallsAmount
@@ -72,7 +65,7 @@ namespace ViewModel
             set
             {
                 _ballsAmount = value;
-                OnPropertyChanged();
+                RaisePropertyChanged();
             }
         }
         public AsyncObservableCollection<VisualBall> BallsGroup
@@ -81,25 +74,16 @@ namespace ViewModel
             set
             {
                 Ellipses = value;
-                RaisePropertyChanged("BallsGroup");
+                RaisePropertyChanged();
             }
         }
-        private void ToggleSimulationButtons()
+        private void SwitchOnOffButtons()
         {
-            ClickButton.IsEnabled = !ClickButton.IsEnabled;
-            ExitClick.IsEnabled = !ExitClick.IsEnabled;
-            if (!ClickButton.IsEnabled && !ExitClick.IsEnabled)
+                ClickButton.IsEnabled = !ClickButton.IsEnabled;
                 ExitClick.IsEnabled = !ExitClick.IsEnabled;
-      
-
+                if (!ClickButton.IsEnabled && !ExitClick.IsEnabled)
+                    ExitClick.IsEnabled = !ExitClick.IsEnabled;
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string caller = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(caller));
-        }
-
     }
 }
 

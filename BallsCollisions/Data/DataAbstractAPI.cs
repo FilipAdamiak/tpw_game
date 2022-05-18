@@ -21,6 +21,9 @@ namespace Data
             return new Board();
         }
 
+        public static int _boardWidth { get; } = 750;
+        public static int _boardHeight { get; } = 400;
+
         public abstract void AddBalls(int amount);
         public abstract void RunSimulation();
         public abstract void StopSimulation();
@@ -32,8 +35,7 @@ namespace Data
             BallPositionChange?.Invoke(this, args);
         }
 
-        public static int _boardWidth { get; } = 750;
-        public static int _boardHeight { get; } = 400;
+        
 
     }
 
