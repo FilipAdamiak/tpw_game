@@ -15,6 +15,7 @@ namespace Model
             ballsAmount = 0;
             logicLayer.ChangedPosition += OnBallsLogicOnPositionChange;
         }
+
         public event EventHandler<ModelEventArgs> BallPositionChange;
 
         private void OnBallsLogicOnPositionChange(object sender, LogicEventArgs args)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Numerics;
 using Data;
 
@@ -28,11 +26,11 @@ namespace Logic
 
         private static bool IsBallsCollides(BallEntity ballOne, BallEntity ballTwo)
         {
-            var centerOne = ballOne.Position + (Vector2.One * 25 / 2) + ballOne.Velocity * (16 / 1000f);
-            var centerTwo = ballTwo.Position + (Vector2.One * 25 / 2) + ballTwo.Velocity * (16 / 1000f);
+            var centerOne = ballOne.Position + (Vector2.One * ballOne.Radius / 2) + ballOne.Velocity * (16 / 1000f);
+            var centerTwo = ballTwo.Position + (Vector2.One * ballTwo.Radius / 2) + ballTwo.Velocity * (16 / 1000f);
 
             var distance = Vector2.Distance(centerOne, centerTwo);
-            var radiusSum = (25 + 25) / 2f;
+            var radiusSum = (ballOne.Radius + ballTwo.Radius) / 2f;
 
             return distance <= radiusSum;
         }
@@ -40,12 +38,12 @@ namespace Logic
         public static void CollideWithWalls(BallEntity ball, Vector2 boardSize)
         {
             var position = ball.Position + ball.Velocity * (16 / 1000f);
-            if (position.X <= 0 || position.X + 25 >= boardSize.X)
+            if (position.X <= 0 || position.X + ball.Radius >= boardSize.X)
             {
                 ball.Velocity = new Vector2(-ball.Velocity.X, ball.Velocity.Y);
             }
 
-            if (position.Y <= 0 || position.Y + 25 >= boardSize.Y)
+            if (position.Y <= 0 || position.Y + ball.Radius >= boardSize.Y)
             {
                 ball.Velocity = new Vector2(ball.Velocity.X, -ball.Velocity.Y);
             }

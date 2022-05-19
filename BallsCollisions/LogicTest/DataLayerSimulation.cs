@@ -7,11 +7,11 @@ namespace LogicTest
 
     public class DataSimulation : DataAbstractAPI
     {
-        public ObservableCollection<BallEntity> _balls { get; set; }
+        public ObservableCollection<BallSimulation> _balls { get; set; }
 
         public DataSimulation()
         {
-            _balls = new ObservableCollection<BallEntity>();
+            _balls = new ObservableCollection<BallSimulation>();
         }
         public bool IsSimulating { get; set; } = false;
 
@@ -21,11 +21,10 @@ namespace LogicTest
             {
                 Vector2 position = new Vector2(1, 1);
                 Vector2 velocity = new Vector2(100, 100);
-                BallEntity ball = new BallSimulation(_balls.Count, position, velocity, this);
+                BallSimulation ball = new BallSimulation(_balls.Count, position, velocity, this);
                 _balls.Add(ball);
             }
         }
-
 
         public override void RunSimulation()
         {
@@ -43,18 +42,25 @@ namespace LogicTest
     }
     public class BallSimulation : BallEntity
     {
-
+        private int _radius;
+        private Vector2 _velocity;
+        private Vector2 _position;
+        private int _id;
         public BallSimulation(int id, Vector2 position, Vector2 velocity, DataAbstractAPI owner)
         {
-            Radius = 5;
-            Id = id;
-            Position = position;
-            Velocity = velocity;
-
+            _radius = 5;
+            _id = id;
+            _position = position;
+            _velocity = velocity;
         }
+
+        public int Radius { get { return _radius; } }
+        public Vector2 Position { get { return _position; } }
+        public int Id { get { return _id; } }
+        public Vector2 Velocity { get { return _velocity; } }
         public override void RunSimulation()
         {
-            //Run+
+            
         }
     }
 }

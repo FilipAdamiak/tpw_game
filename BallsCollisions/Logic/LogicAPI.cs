@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Numerics;
 using System.Threading;
-using System.Threading.Tasks;
 using Data;
 
 namespace Logic
@@ -22,7 +19,6 @@ namespace Logic
         {
             dataAbstract.BallPositionChange += OnDataBallsOnPositionChange;
             dataAbstract.RunSimulation();
-
         }
 
         public override void StopSimulation()

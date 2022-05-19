@@ -9,11 +9,11 @@ namespace Data
     public abstract class BallEntity
     {
 
-        public int Id { get; set;  }
-        public int Radius { get; set; }
-        public Vector2 Position { get; set; }
+        public int Id { get; private set;  }
+        public int Radius { get; private set; }
+        public Vector2 Position { get; private set; }
         public Vector2 Velocity { get; set; }
-        public float Mass { get; set; }
+        public float Mass { get; private set; }
         public CancellationToken Cancellation { get; set; }
         public event EventHandler<BallEventArgs> ChangedPosition;
      

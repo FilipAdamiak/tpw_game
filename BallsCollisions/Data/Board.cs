@@ -24,11 +24,12 @@ namespace Data
         public override void AddBalls(int amount)
         {
             Random random = new Random();
+            int radius = 25;
             for (int i = 0; i < amount; i++)
             {
-                Vector2 position = GeneratePointInsideBoard(25);
+                Vector2 position = GeneratePointInsideBoard(radius);
                 Vector2 velocity = GetRandomVelocity();
-                float weight = random.Next(25, 50);
+                float weight = random.Next(radius, radius*2);
                 BallEntity ball = new BallEntity.Ball(_balls.Count, position, velocity, weight, this);
                 _balls.Add(ball);
             }
@@ -96,8 +97,8 @@ namespace Data
         private Vector2 GetRandomVelocity()
         {
             var rng = new Random();
-            var x = rng.Next(-100, 100);
-            var y = rng.Next(-100, 100);
+            var x = rng.Next(-200, 200);
+            var y = rng.Next(-200, 200);
             if (Math.Abs(x) < 40)
             {
                 x = 40;
