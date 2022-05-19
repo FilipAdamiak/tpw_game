@@ -64,8 +64,8 @@ namespace Logic
             float velocityTwoNormal = Vector2.Dot(unitNormalVector, ballTwo.Velocity);
             float velocityTwoTangent = Vector2.Dot(unitTangentVector, ballTwo.Velocity);
 
-            float newNormalVelocityOne = (velocityOneNormal + 2 * velocityTwoNormal) / 2;
-            float newNormalVelocityTwo = (velocityTwoNormal + 2 * velocityOneNormal) / 2;
+            float newNormalVelocityOne = (velocityOneNormal * (ballOne.Mass - ballTwo.Mass) + 2 * ballTwo.Mass * velocityTwoNormal) / (ballOne.Mass + ballTwo.Mass);
+            float newNormalVelocityTwo = (velocityTwoNormal * (ballTwo.Mass - ballOne.Mass) + 2 * ballOne.Mass * velocityOneNormal) / (ballOne.Mass + ballTwo.Mass);
 
             Vector2 newVelocityOne = Vector2.Multiply(unitNormalVector, newNormalVelocityOne) + Vector2.Multiply(unitTangentVector, velocityOneTangent);
             Vector2 newVelocityTwo = Vector2.Multiply(unitNormalVector, newNormalVelocityTwo) + Vector2.Multiply(unitTangentVector, velocityTwoTangent);

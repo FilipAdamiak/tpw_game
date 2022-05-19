@@ -1,86 +1,75 @@
 ﻿using Logic;
 using System.Numerics;
 using NUnit.Framework;
+using Data;
 
 namespace LogicTest
 {
     public class BallTests
     {
         private LogicAbstractAPI _logicApi;
-        /*[SetUp]
+        private DataSimulation _simulation;
+        [SetUp]
         public void SetUp()
         {
+            _simulation = new DataSimulation();
             _logicApi = LogicAbstractAPI.CreateApi(new DataSimulation());
         }
 
         [Test]
         public void BallContructorTest()
         {
-            Vector2 v = new Vector2(1, 2);
-            int radius = 5;
-            Ball ball = new Ball(v, radius);
+            int r = 5;
+            Vector2 v1 = new Vector2(1, 2);
+            Vector2 v2 = new Vector2(2, 1);
+            BallEntity ball = new BallSimulation(0, v1, v2, DataAbstractAPI.CreateDataAPI());
 
-            Assert.AreEqual(radius, ball.Radius);
-            Assert.AreEqual(v, ball.Position);
-
+            Assert.AreEqual(r, ball.Radius);
+            Assert.AreEqual(v1, ball.Position);
+            Assert.AreEqual(v2, ball.Velocity);
         }
-
+        
         [Test]
-        public void PositionChangedTest()
+        public void AddBallsTest()
         {
-            Ball ball = new Ball();
-            ball.Velocity = new Vector2(1, 2);
-            ball.Position = new Vector2(_logicApi.Width, _logicApi.Height);
-            ball.ChangePosition();
-            Assert.AreNotEqual(_logicApi.Width, ball.Velocity.X);
-            Assert.AreNotEqual(_logicApi.Height, ball.Velocity.Y);
+            _simulation.AddBalls(2);
+            Assert.AreEqual(2, _simulation._balls.Count);
         }
-
-        [Test]
-        public void BallVelocityTest()
-        {
-            Ball ball = new Ball();
-            ball.Velocity = new Vector2(1, 2);
-            Assert.AreEqual(1, ball.Velocity.X);
-            Assert.AreEqual(2, ball.Velocity.Y);
-        }
-    
        
         [Test]
-        public void LogicApiConstructorTest()
+        public void RunStopSimulationTest()
         {
-            int _width = 750;
-            int _height = 400;
-            Assert.AreEqual(_width, _logicApi.Width);
-            Assert.AreEqual(_height, _logicApi.Height);
-            Assert.AreEqual(_logicApi.Balls.Count, 0);
+            _simulation.RunSimulation();
+            Assert.AreEqual(true, _simulation.IsSimulating);
+            _simulation.StopSimulation();
+            Assert.AreEqual(false, _simulation.IsSimulating);
         }
 
         [Test]
-        public void CreateBallsTest()
+        public void BallRadiusTest()
         {
-            int _amount = 5;
-            int _radius = 25;
-            _logicApi.CreateBalls(_amount, _radius);
-
-            Assert.AreEqual(_amount, _logicApi.Balls.Count);
-
-            foreach (Ball ball in _logicApi.Balls)
+            _simulation._balls.Add(new BallSimulation(1, new Vector2(50, 50),  new Vector2(0, 1), _simulation));
+            _simulation._balls.Add(new BallSimulation(2, new Vector2(50, 75),  new Vector2(0, -1), _simulation));
+            _logicApi.ChangedPosition += (_, args) =>
             {
-                Assert.IsTrue(ball.Position.X >= 1);
-                Assert.IsTrue(ball.Position.X  <= _logicApi.Width - _radius);
-                Assert.IsTrue(ball.Position.Y  >= 1);
-                Assert.IsTrue(ball.Position.Y  <= _logicApi.Height -  _radius);
-            }
-
+                Assert.AreNotEqual(Vector2.One, _simulation._balls[0].Velocity);
+            };
+            _logicApi.RunSimulation();
         }
 
         [Test]
-        public void DeleteBallsTest()
+        public void BallCollisionsTest()
         {
-            _logicApi.DeleteBalls();
-            Assert.AreEqual(0, _logicApi.Balls.Count);
-        }*/
+            _simulation._balls.Add(new BallSimulation(1, new Vector2(50, 50), new Vector2(0, 1), _simulation));
+            _simulation._balls.Add(new BallSimulation(2, new Vector2(50, 60),  new Vector2(0, -1), _simulation));
+            _logicApi.ChangedPosition += (_, args) =>
+            {
+                Assert.AreNotEqual(Vector2.One, _simulation._balls[0].Velocity);
+            };
+            _logicApi.RunSimulation();
+           
+        }
+
 
     }
 }

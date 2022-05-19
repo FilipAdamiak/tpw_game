@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Numerics;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Diagnostics;
-using static Data.BallEntity;
 
 namespace Data
 {
@@ -32,11 +28,11 @@ namespace Data
             {
                 Vector2 position = GeneratePointInsideBoard(25);
                 Vector2 velocity = GetRandomVelocity();
-                BallEntity ball = new Ball(_balls.Count, position, velocity, this);
+                float weight = random.Next(25, 50);
+                BallEntity ball = new BallEntity.Ball(_balls.Count, position, velocity, weight, this);
                 _balls.Add(ball);
             }
         }
-
 
         public override void RunSimulation()
         {
@@ -47,7 +43,7 @@ namespace Data
 
             foreach (var ball in _balls)
             {
-                ball.ChangedPosition += this.OnBallOnPositionChange;
+                ball.ChangedPosition += OnBallOnPositionChange;
 
                 Task.Factory.StartNew(ball.RunSimulation, CancelSimulationSource.Token);
             }
@@ -69,7 +65,7 @@ namespace Data
                 x = rng.Next(Radius, _boardWidth - Radius);
                 y = rng.Next(Radius, _boardHeight - Radius);
 
-                isPositionCorrect = CheckIsSpaceFree(new Vector2(x,y), Radius);
+                isPositionCorrect = IsSpaceFree(new Vector2(x,y), Radius);
 
                 i++;
             }
@@ -77,7 +73,7 @@ namespace Data
             return new Vector2(x, y);
         }
 
-        private bool CheckIsSpaceFree(Vector2 position, int ballRadius)
+        private bool IsSpaceFree(Vector2 position, int ballRadius)
         {
             foreach (var ball in _balls)
             {
@@ -100,16 +96,16 @@ namespace Data
         private Vector2 GetRandomVelocity()
         {
             var rng = new Random();
-            var x = rng.Next(-200, 200);
-            var y = rng.Next(-200, 200);
-            if (Math.Abs(x) < 50)
+            var x = rng.Next(-100, 100);
+            var y = rng.Next(-100, 100);
+            if (Math.Abs(x) < 40)
             {
-                x = 50;
+                x = 40;
             }
 
-            if (Math.Abs(y) < 50)
+            if (Math.Abs(y) < 40)
             {
-                y = 50;
+                y = 40;
             }
 
             return new Vector2(x, y);

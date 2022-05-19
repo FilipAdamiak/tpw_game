@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 using Data;
 
 namespace Logic
@@ -10,6 +7,7 @@ namespace Logic
     {
         public abstract Vector2 Position { get; }
         public abstract int ID { get; }
+        public abstract float Radius { get; }
     }
     internal class LogicBall : LogicBallWrapper
     {
@@ -20,5 +18,6 @@ namespace Logic
         }
         public override Vector2 Position { get { return Ball.Position; } }
         public override int ID { get { return Ball.Id; } }
+        public override float Radius { get { return Ball.Radius; } }
     }
 }

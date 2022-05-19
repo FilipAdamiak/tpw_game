@@ -31,7 +31,7 @@ namespace Logic
         }
         private void OnDataBallsOnPositionChange(object _, BoardEventArgs args)
         {
-            this.HandleBallsCollisions(args.sender, args.Balls);
+            HandleBallsCollisions(args.sender, args.Balls);
             BallsService.CollideWithWalls(args.sender, new Vector2(DataAbstractAPI._boardWidth, DataAbstractAPI._boardHeight));
             var newArgs = new LogicEventArgs(new LogicBall(args.sender));
             OnPositionChange(newArgs);

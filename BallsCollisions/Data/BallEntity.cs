@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -12,9 +10,10 @@ namespace Data
     {
 
         public int Id { get; set;  }
-        public int Radius { get; private set; }
-        public Vector2 Position { get; private set; }
+        public int Radius { get; set; }
+        public Vector2 Position { get; set; }
         public Vector2 Velocity { get; set; }
+        public float Mass { get; set; }
         public CancellationToken Cancellation { get; set; }
         public event EventHandler<BallEventArgs> ChangedPosition;
      
@@ -23,12 +22,13 @@ namespace Data
         internal class Ball : BallEntity
         {
             private readonly DataAbstractAPI owner;
-            public Ball(int id, Vector2 position, Vector2 velocity, DataAbstractAPI owner)
+            public Ball(int id, Vector2 position, Vector2 velocity, float mass , DataAbstractAPI owner)
             {
                 Id = id;
                 Position = position;
                 Velocity = velocity;
                 Radius = 25;
+                Mass = mass;
                 this.owner = owner;
             }
 
@@ -42,7 +42,7 @@ namespace Data
                 if (nextPosition.Y < 0)
                     nextPosition.Y = -1;
                 if (Radius + nextPosition.Y > DataAbstractAPI._boardHeight)
-                    nextPosition.Y = Board._boardHeight - Radius + 1;
+                    nextPosition.Y = DataAbstractAPI._boardHeight - Radius + 1;
                 return nextPosition;
             }
 

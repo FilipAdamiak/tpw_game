@@ -55,7 +55,8 @@ namespace ViewModel
         {
             modelLayer.StopSimulation();
             Ellipses.Clear();
-            modelLayer.SetBallAmount(BallsAmount);
+            modelLayer.SetBallAmount(0);
+            BallsAmount = 0;
             SwitchOnOffButtons();
         }
 

@@ -12,7 +12,7 @@ namespace ViewModel
 
         public VisualBall()
         {
-            this.position = Vector2.Zero;
+            position = Vector2.Zero;
             radius = 0;
         }
         public VisualBall(Vector2 position, float radius)

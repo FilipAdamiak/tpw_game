@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 using Logic;
 
 namespace Model
@@ -25,7 +22,7 @@ namespace Model
         }
         public override float Radius
         {
-            get { return 25; }
+            get { return ball.Radius; }
         }
         public override int ID
         {
