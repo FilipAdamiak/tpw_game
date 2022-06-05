@@ -29,7 +29,7 @@ namespace Logic
         {
             HandleBallsCollisions(args.sender, args.Balls);
             BallsService.CollideWithWalls(args.sender, new Vector2(DataAbstractAPI._boardWidth, DataAbstractAPI._boardHeight));
-            var newArgs = new LogicEventArgs(new LogicBall(args.sender));
+            LogicEventArgs newArgs = new LogicEventArgs(new LogicBall(args.sender));
             OnPositionChange(newArgs);
         }
         private void HandleBallsCollisions(BallEntity ball, ObservableCollection<BallEntity> allBalls)
@@ -37,7 +37,7 @@ namespace Logic
             _mutex.WaitOne();
             try
             {
-                var collidedBall = BallsService.CheckCollisions(ball, allBalls);
+                BallEntity collidedBall = BallsService.CheckCollisions(ball, allBalls);
                 if (collidedBall != null)
                 {
                     BallsService.HandleCollision(ball, collidedBall);

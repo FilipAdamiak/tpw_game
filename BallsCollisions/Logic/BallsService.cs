@@ -8,7 +8,7 @@ namespace Logic
     {
         public static BallEntity CheckCollisions(BallEntity ball, IEnumerable<BallEntity> ballsList)
         {
-            foreach (var ballTwo in ballsList)
+            foreach (BallEntity ballTwo in ballsList)
             {
                 if (ReferenceEquals(ball, ballTwo))
                 {
@@ -26,18 +26,18 @@ namespace Logic
 
         private static bool IsBallsCollides(BallEntity ballOne, BallEntity ballTwo)
         {
-            var centerOne = ballOne.Position + (Vector2.One * ballOne.Radius / 2) + ballOne.Velocity * (16 / 1000f);
-            var centerTwo = ballTwo.Position + (Vector2.One * ballTwo.Radius / 2) + ballTwo.Velocity * (16 / 1000f);
+            Vector2 centerOne = ballOne.Position + (Vector2.One * ballOne.Radius / 2) + ballOne.Velocity * (16 / 1000f);
+            Vector2 centerTwo = ballTwo.Position + (Vector2.One * ballTwo.Radius / 2) + ballTwo.Velocity * (16 / 1000f);
 
-            var distance = Vector2.Distance(centerOne, centerTwo);
-            var radiusSum = (ballOne.Radius + ballTwo.Radius) / 2f;
+            float distance = Vector2.Distance(centerOne, centerTwo);
+            float radiusSum = (ballOne.Radius + ballTwo.Radius) / 2f;
 
             return distance <= radiusSum;
         }
 
         public static void CollideWithWalls(BallEntity ball, Vector2 boardSize)
         {
-            var position = ball.Position + ball.Velocity * (16 / 1000f);
+            Vector2 position = ball.Position + ball.Velocity * (16 / 1000f);
             if (position.X <= 0 || position.X + ball.Radius >= boardSize.X)
             {
                 ball.Velocity = new Vector2(-ball.Velocity.X, ball.Velocity.Y);

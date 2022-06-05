@@ -46,10 +46,10 @@ namespace Data
             ballsMutex.WaitOne();
             try
             {
-                JObject ingredient = JObject.FromObject(ball);
-                ingredient["Time"] = DateTime.Now.ToString("HH:mm:ss");
+                JObject timeObject = JObject.FromObject(ball);
+                timeObject["Time"] = DateTime.Now.ToString("HH:mm:ss");
 
-                _logQueue.Enqueue(ingredient);
+                _logQueue.Enqueue(timeObject);
 
                 if (_logTask == null || _logTask.IsCompleted)
                 {
@@ -61,7 +61,7 @@ namespace Data
                 ballsMutex.ReleaseMutex();
             }
         }
-        private async Task WriteLogToFile()
+        private async void WriteLogToFile()
         {
             while (_logQueue.TryDequeue(out JObject ball)) {
                 _logArray.Add(ball);

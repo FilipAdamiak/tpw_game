@@ -27,7 +27,6 @@ namespace ViewModel
             {
                 X = value.X;
                 Y = value.Y;
-                OnPropertyChanged();
             }
         }
         public float X

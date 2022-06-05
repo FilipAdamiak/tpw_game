@@ -3,26 +3,31 @@ using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Data
 {
-    public abstract class BallEntity
+    public abstract class BallEntity : ISerializable
     {
 
         public int Id { get; private set;  }
+        [JsonIgnore]
         public int Radius { get; private set; }
         public Vector2 Position { get; private set; }
         public Vector2 Velocity { get; set; }
         public float Mass { get; private set; }
+        [JsonIgnore]
         public CancellationToken Cancellation { get; set; }
         public event EventHandler<BallEventArgs> ChangedPosition;
-     
+        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+
         public abstract void RunSimulation();
 
         internal class Ball : BallEntity
         {
             private readonly DataAbstractAPI owner;
-            public Ball(int id, Vector2 position, Vector2 velocity, float mass , DataAbstractAPI owner)
+            public Ball(int id, Vector2 position, Vector2 velocity, float mass ,DataAbstractAPI owner)
             {
                 Id = id;
                 Position = position;
@@ -31,6 +36,15 @@ namespace Data
                 Mass = mass;
                 this.owner = owner;
             }
+            public override void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+                info.AddValue("id", Id);
+                info.AddValue("position", Position);
+                info.AddValue("velocity", Velocity);
+                info.AddValue("mass", Mass);
+                info.AddValue("radius", Radius);
+            }
+
 
             public Vector2 Move(Vector2 nextPosition)
             {

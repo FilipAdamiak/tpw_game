@@ -43,7 +43,7 @@ namespace Data
                 return;
             }
 
-            foreach (var ball in _balls)
+            foreach (BallEntity ball in _balls)
             {
                 ball.ChangedPosition += OnBallOnPositionChange;
 
@@ -57,11 +57,11 @@ namespace Data
         }
         private Vector2 GeneratePointInsideBoard(int ballRadius)
         {
-            var rng = new Random();
-            var isPositionCorrect = false;
-            var x = 0;
-            var y = 0;
-            var i = 0;
+            Random rng = new Random();
+            bool isPositionCorrect = false;
+            float x = 0;
+            float y = 0;
+            int i = 0;
             while (!isPositionCorrect)
             {
                 x = rng.Next(Radius, _boardWidth - Radius);
@@ -77,7 +77,7 @@ namespace Data
 
         private bool IsSpaceFree(Vector2 position, int ballRadius)
         {
-            foreach (var ball in _balls)
+            foreach (BallEntity ball in _balls)
             {
                 if (IfCirclesCollide(ball.Position, ball.Radius, position, ballRadius))
                 {
@@ -90,16 +90,16 @@ namespace Data
 
         private bool IfCirclesCollide(Vector2 position1, float radius1, Vector2 position2, float radius2)
         {
-            var distSq = (position1.X - position2.X) * (position1.X - position2.X) + (position1.Y - position2.Y) * (position1.Y - position2.Y);
-            var radSumSq = (radius1 + radius2) * (radius1 + radius2);
+            float distSq = (position1.X - position2.X) * (position1.X - position2.X) + (position1.Y - position2.Y) * (position1.Y - position2.Y);
+            float radSumSq = (radius1 + radius2) * (radius1 + radius2);
             return distSq <= radSumSq;
         }
 
         private Vector2 GetRandomVelocity()
         {
-            var rng = new Random();
-            var x = rng.Next(-200, 200);
-            var y = rng.Next(-200, 200);
+            Random rng = new Random();
+            float x = rng.Next(-200, 200);
+            float y = rng.Next(-200, 200);
             if (Math.Abs(x) < 40)
             {
                 x = 40;
@@ -115,8 +115,8 @@ namespace Data
         private void OnBallOnPositionChange(object _, BallEventArgs args)
         {
             _ballLogger.EnqueueToLoggingQueue(args.Ball);
-            var newArgs = new BoardEventArgs(new ObservableCollection<BallEntity>(_balls), args.Ball);
-            this.OnPositionChange(newArgs);
+            BoardEventArgs newArgs = new BoardEventArgs(new ObservableCollection<BallEntity>(_balls), args.Ball);
+            OnPositionChange(newArgs);
         }
     }
     
