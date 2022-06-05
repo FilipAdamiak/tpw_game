@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Data
 {
-    internal class Board : DataAbstractAPI
+    internal class DataAPI : DataAbstractAPI
     {
-        public Board()
+        public DataAPI()
         {
             _balls = new List<BallEntity>();
         }
 
         public List<BallEntity> _balls { get; }
         private const int Radius = 25;
+        private readonly AbstractBallLogger _ballLogger = new BallLogger();
        
         public List<BallEntity> Balls
         {
@@ -113,6 +114,7 @@ namespace Data
         }
         private void OnBallOnPositionChange(object _, BallEventArgs args)
         {
+            _ballLogger.EnqueueToLoggingQueue(args.Ball);
             var newArgs = new BoardEventArgs(new ObservableCollection<BallEntity>(_balls), args.Ball);
             this.OnPositionChange(newArgs);
         }

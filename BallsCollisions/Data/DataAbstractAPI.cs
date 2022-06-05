@@ -12,7 +12,7 @@ namespace Data
 
         public static DataAbstractAPI CreateDataAPI()
         {
-            return new Board();
+            return new DataAPI();
         }
 
         public static int _boardWidth { get; } = 750;
