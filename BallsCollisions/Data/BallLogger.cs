@@ -14,8 +14,8 @@ namespace Data
         private Task _logTask;
         private readonly ConcurrentQueue<JObject> _logQueue;
         private readonly JArray _logArray;
-        private readonly Mutex ballsMutex = new Mutex();
-        private Mutex fileMutex = new Mutex();
+        private readonly Mutex _ballsMutex = new Mutex();
+        private readonly Mutex _fileMutex = new Mutex();
 
 
         public BallLogger()
@@ -43,7 +43,7 @@ namespace Data
 
         public override void EnqueueToLoggingQueue(BallEntity ball)
         {
-            ballsMutex.WaitOne();
+            _ballsMutex.WaitOne();
             try
             {
                 JObject timeObject = JObject.FromObject(ball);
@@ -58,23 +58,23 @@ namespace Data
             }
             finally
             {
-                ballsMutex.ReleaseMutex();
+                _ballsMutex.ReleaseMutex();
             }
         }
-        private async void WriteLogToFile()
+        private void WriteLogToFile()
         {
             while (_logQueue.TryDequeue(out JObject ball)) {
                 _logArray.Add(ball);
             }
             string output = JsonConvert.SerializeObject(_logArray);
-            fileMutex.WaitOne();
+            _fileMutex.WaitOne();
             try
             {
                 File.WriteAllText(_path, output);
             }
             finally
             {
-                fileMutex.ReleaseMutex();
+                _fileMutex.ReleaseMutex();
             }
 
         }

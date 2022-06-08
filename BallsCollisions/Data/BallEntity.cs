@@ -10,7 +10,6 @@ namespace Data
 {
     public abstract class BallEntity : ISerializable
     {
-
         public int Id { get; private set;  }
         [JsonIgnore]
         public int Radius { get; private set; }
@@ -20,7 +19,15 @@ namespace Data
         [JsonIgnore]
         public CancellationToken Cancellation { get; set; }
         public event EventHandler<BallEventArgs> ChangedPosition;
-        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("id", Id);
+            info.AddValue("position", Position);
+            info.AddValue("velocity", Velocity);
+            info.AddValue("mass", Mass);
+            info.AddValue("radius", Radius);
+        }
 
         public abstract void RunSimulation();
 
@@ -36,15 +43,6 @@ namespace Data
                 Mass = mass;
                 this.owner = owner;
             }
-            public override void GetObjectData(SerializationInfo info, StreamingContext context)
-            {
-                info.AddValue("id", Id);
-                info.AddValue("position", Position);
-                info.AddValue("velocity", Velocity);
-                info.AddValue("mass", Mass);
-                info.AddValue("radius", Radius);
-            }
-
 
             public Vector2 Move(Vector2 nextPosition)
             {
@@ -77,8 +75,6 @@ namespace Data
                     stopwatch.Reset();
                 }
             }
-
-            
 
         }
     }
