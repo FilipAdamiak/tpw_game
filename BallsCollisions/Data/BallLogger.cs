@@ -38,7 +38,9 @@ namespace Data
             }
 
             _logArray = new JArray();
-            File.Create(_path);
+            FileStream myFile = File.Create(_path);
+            myFile.Close();
+            
         }
 
         public override void EnqueueToLoggingQueue(BallEntity ball)
@@ -61,7 +63,7 @@ namespace Data
                 _ballsMutex.ReleaseMutex();
             }
         }
-        private void WriteLogToFile()
+        private async Task WriteLogToFile()
         {
             while (_logQueue.TryDequeue(out JObject ball)) {
                 _logArray.Add(ball);
@@ -70,6 +72,7 @@ namespace Data
             _fileMutex.WaitOne();
             try
             {
+                
                 File.WriteAllText(_path, output);
             }
             finally
@@ -77,6 +80,11 @@ namespace Data
                 _fileMutex.ReleaseMutex();
             }
 
+        }
+        ~BallLogger()
+        {
+            _fileMutex.WaitOne();
+            _fileMutex.ReleaseMutex();
         }
     }
 }
