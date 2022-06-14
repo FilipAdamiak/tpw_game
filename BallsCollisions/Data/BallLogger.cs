@@ -43,15 +43,15 @@ namespace Data
             
         }
 
-        public override void EnqueueToLoggingQueue(BallEntity ball)
+        public void EnqueueToLoggingQueue(BallEntity ball)
         {
             _ballsMutex.WaitOne();
             try
             {
-                JObject timeObject = JObject.FromObject(ball);
-                timeObject["Time"] = DateTime.Now.ToString("HH:mm:ss");
+                JObject objectToAdd = JObject.FromObject(ball);
+                objectToAdd["Time"] = DateTime.Now.ToString("HH:mm:ss");
 
-                _logQueue.Enqueue(timeObject);
+                _logQueue.Enqueue(objectToAdd);
 
                 if (_logTask == null || _logTask.IsCompleted)
                 {

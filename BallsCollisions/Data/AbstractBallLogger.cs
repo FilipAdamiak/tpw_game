@@ -1,7 +1,7 @@
 ﻿namespace Data
 {
-   internal abstract class AbstractBallLogger
+   internal interface AbstractBallLogger
     {
-        public abstract void EnqueueToLoggingQueue(BallEntity ball);
+        void EnqueueToLoggingQueue(BallEntity ball);
     } 
 }
